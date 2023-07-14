@@ -1,0 +1,62 @@
+<login  class="container">
+    <script execute="beforeRender">
+        if (document.getElementById('submit')) {
+            console.log('submit')
+            dox.getId('submit').on('click', () => {
+                let email = getState('email')
+                let password = getState('password')
+                pb.collection('users').authWithPassword(email, password).then((res) => {
+                    console.log(res)
+                    window.location.hash = '#/'
+                }).catch((err) => {
+                    console.log(err)
+                })
+            })
+
+           
+        }
+
+    </script>
+    <div class="flex   justify-center mx-auto items-center    max-w-lg   mt-8   rounded">
+     
+        <div class=" flex flex-col justify-center    w-full  p-10  rounded  ">
+            <h1 class="text-3xl mb-8  text-slate-800 justify-self-center mx-auto"> Stemi Learning</h1>
+
+            <label class=" flex justify-start  label">
+                <span class="label-text mb-2  ">Email</span>
+            </label>
+            <input type="email" onchange="setState('email', this.value)" onblur="
+    dox.validate('email', this.value, {
+        required: true,
+        message:  {
+            invalid: 'Invalid Email Address',
+            required: 'Email is required'
+        },
+        style: 'border: 1px solid red',
+        await: {
+            time: '3000',
+            fn: 'clearStyles()'
+        }
+    })" placeholder="Type your email...."
+                class="input border border-slate-300 w-full   focus:border focus:border-sky-500 " />
+ 
+
+            <label class="label">
+                <span class="label-text mb-2">Password </span>
+            </label>
+            <input type="password" onchange="setState('password', this.value)" placeholder="Enter your password"
+                class="input border border-slate-300 w-full  focus:border focus:border-sky-500" />
+            <button id="submit"
+                class="btn btn btn-ghost border hover:bg-none text-black shadow-sm border-sky-500  mt-4">Login </button>
+                <a href="#/" class="mt-5">Do not have an account?</a>
+                <div class="divider"><a href="#/forgot-password">Forgot Password?</a></div>
+                
+
+
+        </div>
+    </div>
+    
+
+
+
+</login>

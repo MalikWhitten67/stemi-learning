@@ -1,0 +1,107 @@
+```
+landing.html
+Last edited: 7/13/23
+By: Malik [Project Manager]
+```
+<import src="/components/header.html"></import>
+<import src="./components/card.html"></import>
+<landing class="container">
+    <script execute="beforeRender">
+        import Pocketbase from './public/scripts/pocketbase.js'
+        const pb = new Pocketbase('https://stemilearning.pockethost.io')
+        window.pb = pb
+        pb.autoCancellation(false)
+        if (document.getElementById('signup_submit')) {
+            dox.getId('signup_submit').on('click', () => {
+                let email = getState('email')
+                let username = getState('username')
+                let password = getState('password')
+                pb.collection('users').create({
+                    email: email,
+                    username: username,
+                    password: password,
+                    passwordConfirm: password
+                }).then((res) => {
+                    console.log(res)
+                     
+                    window.location.hash = '#/login'
+                   
+                }).catch((err) => {
+                    console.log(err)
+                })
+            })
+
+           
+        }
+
+    </script>
+    
+        #if (!localStorage.getItem('pocketbase_auth'));
+        return
+        <div class="flex   justify-center mx-auto items-center    max-w-lg   mt-8   rounded">
+        <div class=" flex flex-col justify-center    w-full  p-10  rounded  ">
+            <h1 class="text-3xl mb-8  text-slate-800 justify-self-center mx-auto"> Stemi Learning</h1>
+
+            <label class=" flex justify-start  label">
+                <span class="label-text mb-2  ">Email</span>
+            </label>
+            <input type="email" onchange="setState('email', this.value)" onblur="
+    dox.validate('email', this.value, {
+        required: true,
+        message:  {
+            invalid: 'Invalid Email Address',
+            required: 'Email is required'
+        },
+        style: 'border: 1px solid red',
+        await: {
+            time: '3000',
+            fn: 'clearStyles()'
+        }
+    })" placeholder="Type your email...."
+                class="input border border-slate-300 w-full   focus:border focus:border-sky-500 " />
+
+
+
+            <label class="label flex justify-start">
+                <span class="label-text mb-2">Username</span>
+            </label>
+            <input type="text" onchange="setState('username', this.value)" placeholder="Add a username"
+                class="input border border-slate-300 w-full   focus:border focus:border-sky-500" />
+
+
+            <label class="label">
+                <span class="label-text mb-2">Password </span>
+            </label>
+            <input type="password" onchange="setState('password', this.value)" onblur="
+    dox.validate('password', this.value, {
+        required: true,
+        min:  8,
+        max: 20,
+        message:  {
+            tooShort: 'Password is too short!',
+            tooLong: 'Password is too long!',
+            required: 'Email is required'
+        },
+        style: 'border: 1px solid red',
+        await: {
+            time: '3000',
+            fn: 'clearStyles()'
+        }
+    })" placeholder="Type A Secure Password"
+                class="input border border-slate-300 w-full  focus:border focus:border-sky-500" />
+            <button id="signup_submit"
+                class="btn btn btn-ghost border hover:bg-none text-black shadow-sm border-sky-500  mt-4">Sign
+                Up</button>
+
+
+        </div>
+    </div>
+    #else
+    return
+    <header></header>
+     
+    #endif
+
+
+
+</landing>
